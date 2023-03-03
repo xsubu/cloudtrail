@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+default page 
+
+{% endblock %}
+
+
+{% block content %}
+<h3> You reached the index page!</h3>
+
+
+<div class="row text-center">
+
+    <a href="{% url 'blog:addpost' %}" class="btn btn-primary">Add new post</a>
+    {% for post in posts %}
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 w-75">
+            
+          <div class="card-body">
+            <h4 class="card-title"><a href="{% url 'blog:detail' post.slug %}" style="text-decoration: none;">{{post.headline}}</a></h4>
+            <p class="card-text">{{post.content|truncatechars:65}}</p>
+           
+          </div>
+          <div class="card-footer">
+            <a href="{% url 'blog:detail' post.slug %}" class="btn btn-primary">View</a>
+            <a href="{% url 'blog:editpost' post.slug %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'blog:deletepost' post.slug %}" class="btn btn-primary">Delete</a>
+
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+default page 
+
+{% endblock %}
+
+
+{% block content %}
+<h3> You reached the default template page!</h3>
+
+<a href={% url 'blog:show' %}>all posts</a> 
+
+{% endblock %}
