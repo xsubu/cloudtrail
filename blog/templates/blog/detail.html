@@ -41,19 +41,24 @@ default page
 <div class="row text-center">
 
   <a href="" class="btn btn-primary">Add new comment</a>
-  <form action="{% url 'blog:detail'  post.slug %}" method="POST"> {% csrf_token %}
+
+ 
+
+  <form action="{% url 'blog:detail'  post.slug %}" method="POST"> 
+    {% csrf_token %}
     <div class="form-floating">
         <label for="author">your email:</label>
-
-      <input type="text" id="author" name="author" required
-             minlength="4" maxlength="8" size="25"><br/>
-          <textarea class="form-control" placeholder="Leave a comment here" 
-                style="height: 100px" id="content" name="content"></textarea>
-          <label for="floatingTextarea2">Leave a comment here.</label>
-          <br>
-          <button type="submit" class="btn btn-primary">Comment</button>
+        <input type="text" id="author" name="author" required
+           minlength="4" maxlength="8" size="25"><br/>
+        
+        <textarea class="form-control" placeholder="Leave a comment here" 
+              style="height: 100px" id="content" name="content"></textarea>
+        <label for="floatingTextarea2">Leave a comment here.</label>
+        <br>
+        <button type="submit" class="btn btn-primary">Comment</button>
     </div>
-</form>
+  </form>
+  
 <br/>
   {% for comment in comments %}
     <div class="col-lg-4 col-md-6 mb-4">

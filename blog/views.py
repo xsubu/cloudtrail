@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from datetime import datetime, timedelta
 from .models import *
-from .forms import BlogForm
+from .forms import BlogForm, CommentForm
 
 
 def showAll(request):
@@ -21,14 +21,20 @@ def showDetail(request, slug):
     post.updated_on = datetime.now()
     post.save()
 
+    #form = CommentForm()
     # we reach here if a comment gets submitted
-    if request.method == "POST":
-        author = request.POST.get('author','')
-        content = request.POST.get('content','')
+    #if request.method == "POST":
+        #form = CommentForm(request.POST)
+    #    author = request.POST.get('author','')
+    #    content = request.POST.get('content','')
         #blog = post.pk
         #blog_id =request.POST.get('blog_id','')
-        comment = Comment(author=author, content=content, post=post)
-        comment.save()
+        #comment = Comment(author=author, content=content, post=post)
+        #comment.save()
+    #    if form.is_valid():
+    #        form = form(post=post)
+    #        form.save()
+            #return redirect('blog:show')
 
     # now gather all the comments
     comments = Comment.objects.all().filter(post=post).filter(is_active=True)
@@ -36,6 +42,7 @@ def showDetail(request, slug):
     context = {
         'post': post,
         'comments': comments,
+        #'form': form,
     }
     return render(request, 'blog/detail.html', context)
 

@@ -43,6 +43,7 @@ class PostTags(models.Model):
 class Comment(models.Model):
     content = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    author = models.EmailField(null=True)
+    author = models.TextField(default='anonymous', max_length = 100)
+    authorEmail = models.EmailField(null=True, max_length = 250)
     created_on = models.DateTimeField(auto_now_add=True)
     is_active=models.BooleanField(default=False)
