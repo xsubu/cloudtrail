@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+default page 
+
+{% endblock %}
+
+
+
+
+{% block content %}
+<h3> You reached the detail page!</h3>
+
+
+
+<a href="{% url 'blog:showall' %}" class="btn btn-primary">Back to all posts</a>
+
+
+
+<article class="mb-4">
+  <div class="container px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <img src="/media/{{post.image}}" alt="{{post.headline}}" class="img-fluid" style="width: 650px; height: 100%;">
+
+            <br/>
+
+            <h1>{{post.headline}}</h1>
+             
+
+            {{post.content | linebreaks}}
+
+            created: {{post.created_on }} <br/>
+
+            last updated: {{post.updated_on }}
+
+          </div>
+      </div>
+  </div>
+</article>
+
+<br/><br/>
+
+<div class="row text-center">
+
+  <h3>Add a comment</h3>
+  <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+  </form>
+  
+<br/><br/>
+  {% for comment in post.comment_set.all %}
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100 w-75">
+          
+        <div class="card-body">
+          <h4 class="card-title">{{comment.author}} said {{comment.created_on |timesince}} ago</h4>
+          <p class="card-text">{{comment.content}}</p>
+         
+        </div>
+       
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+{% endblock %}

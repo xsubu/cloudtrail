@@ -1,6 +1,20 @@
 from django import forms
 from .models import *
+#from django.core.exceptions import ValidationError
+#from .models import Comment
 
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content','author', 'authorEmail']
+
+    #def clean_name(self):
+    #    """Make sure people don't use my name"""
+    #    data = self.cleaned_data['name']
+    #    if not self.request.user.is_authenticated and data.lower().strip() == 'samuel':
+    #        raise ValidationError("Sorry, you cannot use this name.")
+    #    return data
+    
 
 class BlogForm(forms.ModelForm):
     
@@ -11,8 +25,8 @@ class BlogForm(forms.ModelForm):
 
 
 
-class CommentForm(forms.ModelForm):
-
-    class Meta:
-        model = Comment
-        fields = {'content','author', 'authorEmail'}
+#class CommentForm(forms.ModelForm):
+#
+#    class Meta:
+#        model = Comment
+#        fields = {'content','author', 'authorEmail'}

@@ -43,7 +43,13 @@ class PostTags(models.Model):
 class Comment(models.Model):
     content = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    author = models.TextField(default='anonymous', max_length = 100)
+    author = models.CharField(default='anonymous', max_length = 100)
     authorEmail = models.EmailField(null=True, max_length = 250)
     created_on = models.DateTimeField(auto_now_add=True)
-    is_active=models.BooleanField(default=False)
+    is_active=models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['created_on']
+
+    def __str__(self):
+        return self.content[:60]

@@ -10,6 +10,10 @@ default page
 {% block content %}
 <h3> You reached the default template page!</h3>
 
-<a href={% url 'blog:show' %}>all posts</a> 
+
+
+<a href={% url 'blog:showall' %}>all posts</a> <br/>
+
+<a href={% url 'webassistant:home' %}>Go to ChatGPT</a> <br/>
 
 {% endblock %}

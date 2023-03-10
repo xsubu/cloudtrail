@@ -3,15 +3,51 @@ from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime, timedelta
 from .models import *
 from .forms import BlogForm, CommentForm
+from django.views import generic
+
+#from django.views.generic import FormView
+from django.views.generic.detail import SingleObjectMixin
+from django.urls import reverse
+#from .forms import CommentForm
 
 
-def showAll(request):
-    posts = Post.objects.all().filter(is_active=True)
-    #posts = Post.objects.all()
-    context = {
-        'posts': posts,
-    }
-    return render(request, 'blog/index.html', context)
+class showAllPosts(generic.ListView):
+
+    #model = Post
+    queryset = Post.objects.filter(is_active=True).order_by('-created_on')
+    template_name = 'blog/index.html'
+    context_object_name = 'posts'
+    paginate_by = 3
+
+
+class showPostDetail(generic.DetailView):
+    model = Post
+    template_name = "blog/detailv2.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #pk = self.kwargs["pk"]
+        slug = self.kwargs["slug"]
+
+        form = CommentForm()
+        post = get_object_or_404(Post, slug=slug)
+        comments = post.comment_set.all()
+
+        context['post'] = post
+        context['comments'] = comments
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        #TBD
+        context = super().get_context_data(**kwargs)
+        return context
+    
+        
+    
+## old ##
+
+
 
 def showDetail(request, slug):
     post = get_object_or_404(Post,slug=slug)
@@ -23,14 +59,15 @@ def showDetail(request, slug):
 
     #form = CommentForm()
     # we reach here if a comment gets submitted
-    #if request.method == "POST":
+    if request.method == "POST":
         #form = CommentForm(request.POST)
-    #    author = request.POST.get('author','')
-    #    content = request.POST.get('content','')
+        author = request.POST.get('author','')
+        authoremail = request.POST.get('authoremail','')
+        content = request.POST.get('content','')
         #blog = post.pk
         #blog_id =request.POST.get('blog_id','')
-        #comment = Comment(author=author, content=content, post=post)
-        #comment.save()
+        comment = Comment(author=author, authorEmail = authoremail, content=content, post=post)
+        comment.save()
     #    if form.is_valid():
     #        form = form(post=post)
     #        form.save()
