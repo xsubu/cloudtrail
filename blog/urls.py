@@ -11,8 +11,8 @@ urlpatterns = [
     #using predefined class from django
     path('', TemplateView.as_view(template_name = 'blog/default.html')),
     #path('show', views.showAll, name='show'),
-    path('show', views.showAllPosts.as_view(), name='showall'),
-    path('<slug:slug>/', views.showPostDetail.as_view(), name='detail'),
+    path('show', views.post_list, name='showall'),
+    path('<slug:slug>/', views.post_detail, name='detail'),
     path('add', views.AddPost, name='addpost'),
     path('editpost/<str:slug>/', views.editPost, name='editpost'),
     path('deletepost/<str:slug>/', views.deletePost, name='deletepost'),

@@ -41,15 +41,16 @@ class PostTags(models.Model):
 
 # post comment
 class Comment(models.Model):
-    content = models.TextField()
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     author = models.CharField(default='anonymous', max_length = 100)
-    authorEmail = models.EmailField(null=True, max_length = 250)
+    content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    is_active=models.BooleanField(default=True)
+    approved_comment = models.BooleanField(default=True)
 
-    class Meta:
-        ordering = ['created_on']
+    def approve(self):
+        self.approved_comment = True
+        self.save()
 
     def __str__(self):
-        return self.content[:60]
+        return self.text
+    

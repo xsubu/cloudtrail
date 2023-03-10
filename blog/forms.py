@@ -6,7 +6,7 @@ from .models import *
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['content','author', 'authorEmail']
+        fields = ['content','author']
 
     #def clean_name(self):
     #    """Make sure people don't use my name"""

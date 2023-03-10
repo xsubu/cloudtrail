@@ -1,19 +1,15 @@
-{% extends "base.html" %}
 
-{% block title %}
-
-default page 
-
-{% endblock %}
-
+{% extends 'base.html' %}
 
 {% block content %}
-<h3> You reached the default template page!</h3>
-
-
-
-<a href={% url 'blog:showall' %}>all posts</a> <br/>
+  <h1>Main Page</h1>
+  
+    <div class="card mb-4">
+      <div class="card-body">
+        <a href={% url 'blog:showall' %}>all posts</a> <br/>
 
 <a href={% url 'webassistant:home' %}>Go to ChatGPT</a> <br/>
-
+      </div>
+    </div>
+  
 {% endblock %}

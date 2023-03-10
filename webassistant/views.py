@@ -37,7 +37,7 @@ def home(request):
     # the except statement will capture any error
     except:
         # this will redirect to the 404 page after any error is caught
-        return redirect('error_handler')
+        return redirect('error-handler')
 
 
 # this is the view for handling errors
