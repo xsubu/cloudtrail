@@ -7,7 +7,9 @@ from django.urls import reverse
 # post tags
 class Tag(models.Model):
     title = models.CharField(max_length=100, unique=True)
-    posts = models.ManyToManyField('Post', through="PostTags")
+
+    def __str__(self):
+        return self.title
 
 # post
 class Post(models.Model):
@@ -22,7 +24,7 @@ class Post(models.Model):
     #image = models.ImageField(upload_to="images", blank=True, null=True)
     #image = models.FileField(upload_to='images/', null=True)
     image = models.ImageField(upload_to="images", blank=True, null=True)
-    tags = models.ManyToManyField('Tag', through="PostTags")
+    tags = models.ManyToManyField(to=Tag, related_name="posts", blank=True)
    
     class Meta:
         ordering = ['-created_on']
@@ -30,13 +32,6 @@ class Post(models.Model):
     def __str__(self):
         return self.headline
 
-
-    
-
-# post tags join table
-class PostTags(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
 
 # post comment

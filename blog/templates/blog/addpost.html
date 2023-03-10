@@ -1,21 +1,12 @@
-{% extends "base.html" %}
-
-{% block title %}
-
-add page 
-
-{% endblock %}
-
+{% extends 'base.html' %}
 
 {% block content %}
-<h3> You reached the add post!</h3>
-
-
-
-<form enctype="multipart/form-data" action="" method="post">
+  <h1>Add a new blog post</h1>
+  
+  <form enctype="multipart/form-data" action="" method="post">
     {% csrf_token %}
-    {{ form_as_table}}
+    {{ form.as_p}}
     <input type="submit" value="SUBMIT">
 </form>
-
+  
 {% endblock %}

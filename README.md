@@ -10,3 +10,9 @@
 
 - deviated from the main objective to add a chatGPT connection
 - requires openAI library
+
+# v0.3
+- added comment feature
+- added tag feature
+- added basic user registration functionality
+- still requires prettying up ..

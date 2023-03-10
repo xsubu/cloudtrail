@@ -16,12 +16,28 @@ class CommentForm(forms.ModelForm):
     #    return data
     
 
+class CustomMMCF(forms.ModelMultipleChoiceField):
+
+    def label_from_instance(self, member):
+        return '%s' % member.name
+
 class BlogForm(forms.ModelForm):
     
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('updated_on','created_on', 'is_active','view_count','tags')
+        exclude = ('updated_on','created_on', 'is_active','view_count')
+
+        headline = forms.CharField()
+    
+        tags = CustomMMCF(
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+        )
+        #tags = forms.ModelMultipleChoiceField(
+        #queryset=Tag.objects.all(),
+        #widget=forms.CheckboxSelectMultiple
+        #)
 
 
 

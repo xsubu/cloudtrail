@@ -12,6 +12,20 @@ from django.urls import reverse
 
 
 
+def list_posts_by_tag(request, tag_id):
+
+    tag = get_object_or_404(Tag, id=tag_id)
+
+    posts = Post.objects.filter(is_active=True, tags=tag)
+
+    context = {
+        "tag_name": tag.title,
+        "posts": posts
+    }
+
+    return render(request, 'blog/post_list.html', context)
+
+
 def post_list(request):
     posts = Post.objects.filter(is_active=True).order_by('-created_on')
     #paginate_by = 1

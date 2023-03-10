@@ -3,6 +3,14 @@
 
 {% block content %}
   <h1>Blog</h1>
+  <a href="{% url 'blog:addpost' %}" class="btn btn-primary">Add a new post</a>
+
+  {% if tag_name %}
+    <h1>Showing posts with Tag: {{tag_name}}</h1>
+{% else %}
+    <h1>Showing all Posts</h1>
+{% endif %}
+
   {% for post in posts %}
     <div class="card mb-4">
       <div class="card-body">
