@@ -1,15 +1,19 @@
 
 {% extends 'base.html' %}
 
-{% block content %}
-  <h1>Main Page</h1>
-  
-    <div class="card mb-4">
-      <div class="card-body">
-        <a href={% url 'blog:showall' %}>all posts</a> <br/>
 
-<a href={% url 'webassistant:home' %}>Go to ChatGPT</a> <br/>
-      </div>
-    </div>
-  
+{% block breadcrumb %} <h1>Main Page</h1> {% endblock %}
+
+{% block content %}
+
+<div class="p-5 my-4 bg-light rounded-3">
+  <h1>Table of Contents</h1>
+  <ul class="list-unstyled">
+    <li><a href={% url 'blog:showall' %}>All posts</a></li>
+    <li><a href={% url 'webassistant:home' %}>Go to ChatGPT</a></li>
+    <li>About Us</li>
+    <li>Contact</li>
+  </ul>
+</div>
+
 {% endblock %}

@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+
+<div class="p-5 my-4 bg-light rounded-3">
   <h1>Register</h1>
-  
-  <form  action="" method="post" novalidate>
+  <form action="" method="post" novalidate>
     {% csrf_token %}
     {{ form.as_p}}
     <input type="submit" value="SUBMIT">
-</form>
-  
+  </form>
+</div>
+
+
 {% endblock %}
