@@ -3,20 +3,41 @@ from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime, timedelta
 from .models import *
 from .forms import BlogForm, CommentForm
-from django.views import generic
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count
+#from django.views import generic
 
 #from django.views.generic import FormView
-from django.views.generic.detail import SingleObjectMixin
-from django.urls import reverse
+#from django.views.generic.detail import SingleObjectMixin
+#from django.urls import reverse
 #from .forms import CommentForm
 
 
 
 def list_posts_by_tag(request, tag_id):
 
+    default_page = 1
+    posts_per_page = 2
+
     tag = get_object_or_404(Tag, id=tag_id)
 
-    posts = Post.objects.filter(is_active=True, tags=tag)
+    all_posts = Post.objects.filter(is_active=True, tags=tag)
+
+    #let us read the page num from the GET, if not default to 1
+    page_num = request.GET.get('page', default_page)
+
+    paginator = Paginator(all_posts, per_page=posts_per_page)
+
+    #print(paginator.num_pages)
+
+    try:
+        posts = paginator.page(page_num)
+    except PageNotAnInteger:
+        # if page is not an integer, deliver the first page
+        posts = paginator.page(default_page)
+    except EmptyPage:
+        # if the page is out of range, deliver the last page
+        posts = paginator.page(paginator.num_pages)
 
     context = {
         "tag_name": tag.title,
@@ -27,9 +48,37 @@ def list_posts_by_tag(request, tag_id):
 
 
 def post_list(request):
-    posts = Post.objects.filter(is_active=True).order_by('-created_on')
+    #posts = Post.objects.filter(is_active=True).order_by('-created_on')
+
+    default_page = 1
+    posts_per_page = 2
+
+
+    all_posts = Post.objects.filter(is_active=True).order_by('-created_on')
+
+    #let us read the page num from the GET, if not default to 1
+    page_num = request.GET.get('page', default_page)
+
+    paginator = Paginator(all_posts, per_page=posts_per_page)
+
+    try:
+        posts = paginator.page(page_num)
+    except PageNotAnInteger:
+        # if page is not an integer, deliver the first page
+        posts = paginator.page(default_page)
+    except EmptyPage:
+        # if the page is out of range, deliver the last page
+        posts = paginator.page(paginator.num_pages)
+
+    
+
+    context = {
+        "tag_name": "all",
+        "posts": posts
+    }
+
     #paginate_by = 1
-    return render(request, 'blog/post_list.html', {'posts': posts})
+    return render(request, 'blog/post_list.html', context)
 
 def post_detail(request, slug):
     template_name = 'blog/post_detail.html'
@@ -56,7 +105,14 @@ def post_detail(request, slug):
     else:
         comment_form = CommentForm()
 
+    # similar posts
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.objects.filter(is_active=True).filter(tags__in=post_tags_ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags','-created_on')[:6]
+
+
     return render(request, template_name, {'post': post,
+                                           'similar_posts': similar_posts,
                                            'comments': comments,
                                            'new_comment': new_comment,
                                            'comment_form': comment_form})

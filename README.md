@@ -15,4 +15,6 @@
 - added comment feature
 - added tag feature
 - added basic user registration functionality
-- still requires prettying up ..
+- bootstrap 5 added ..
+- pagination in the blog 
+- similar posts based on tags
