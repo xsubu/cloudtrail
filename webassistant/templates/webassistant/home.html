@@ -1,29 +1,36 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Chat Assistant</h1>
-  <div class="row justify-content-center my-4">
-    <div class="col-md-7 mt-4">
-        <div class="card">
-            <h1 class="card-header text-center">Your Personal Assistant</h1>
-            <div class="card-body">
-             <pre>Ask a question .. </pre>
-              <form action="" method="POST">
-                <!-- this secures the form from malicious attacks during submission -->
-                {% csrf_token %}
-                <input class="form-control mb-2" required type="text" autofocus="autofocus" name="prompt" value="{{ prompt }}" id="">
-                <button class="btn btn-success fw-bold" type="submit">
-                     Get Response
-                </button>
-              </form>
-              <hr>
-               
-                {{ formatted_response }}     
-             
-            </div>
-        </div>
+<div class="row justify-content-center my-4">
+  <div class="col-md-7 mt-4">
+    <div class="card">
+      <h1 class="card-header text-center">Your Federal Assistant</h1>
+      <div class="card-body">
+        <pre>Ask a question pertaining to US Federal Employment and Benefits .. </pre>
+        <form action="" method="POST">
+          <!-- this secures the form from malicious attacks during submission -->
+          {% csrf_token %}
+          <input class="form-control mb-2" required type="text" autofocus="autofocus" name="prompt" value="{{ prompt }}"
+            id="">
+          <button class="btn btn-success fw-bold" type="submit">
+            Get Response
+          </button>
+        </form>
+        <hr>
+
+        {{ formatted_response }}
+
+      </div>
     </div>
   </div>
+  <div>
+    TBD
+    <ul>
+      <li>Hints to ask questions</li>
+      <li>Commonly asked questions</li>
+      <li>Useful Resources</li>
+    </ul>
+  </div>
 </div>
+
 {% endblock %}

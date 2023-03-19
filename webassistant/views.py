@@ -10,35 +10,48 @@ from .key import CHATGPT_API_KEY
 
 openai.api_key = CHATGPT_API_KEY
 
-# this is the home view for handling home page logic
+limit_phrase = " Make sure your answer is relevant to us federal employment"
+
+
 def home(request):
-    # the try statement is for sending request to the API and getting back the response
-    # formatting it and rendering it in the template
+
     try:
-        # checking if the request method is POST
-        if request.method == 'POST':
-            # getting prompt data from the form
-            prompt = request.POST.get('prompt')
-            # making a request to the API 
-            response = openai.Completion.create(model="text-davinci-003", prompt=prompt, temperature=1, max_tokens=1000)
-            # formatting the response input
-            formatted_response = response['choices'][0]['text']
-            # bundling everything in the context
+        if request.method == "POST":
+            message = request.POST["prompt"]
+            response = generate_response(message + limit_phrase)
+
             context = {
-                'formatted_response': formatted_response,
-                'prompt': prompt
+                'formatted_response': response,
+                'prompt': message
             }
-            # this will render the results in the home.html template
+        
             return render(request, 'webassistant/home.html', context)
-        # this runs if the request method is GET
+    
         else:
-            # this will render when there is no request POST or after every POST request
+
             return render(request, 'webassistant/home.html')
-    # the except statement will capture any error
     except:
+
         # this will redirect to the 404 page after any error is caught
         return redirect('error-handler')
+    
 
+def generate_response(prompt):
+    # Set up the OpenAI GPT-3 engine
+    engine = "text-davinci-002"
+
+    # Generate a response using the OpenAI API
+    response = openai.Completion.create(
+        engine=engine,
+        prompt=prompt,
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        temperature=0.7,
+    )
+
+    # Return the generated response
+    return response.choices[0].text.strip()
 
 # this is the view for handling errors
 def error_handler(request):

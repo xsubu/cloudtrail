@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 
 from datetime import datetime, timedelta
 from .models import *
 from .forms import BlogForm, CommentForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
+from django.urls import reverse_lazy
 #from django.views import generic
 
 #from django.views.generic import FormView
@@ -12,12 +13,21 @@ from django.db.models import Count
 #from django.urls import reverse
 #from .forms import CommentForm
 
+from cloudtrail import app_settings
 
+
+def app_info():
+    app = {
+    "title": app_settings.APP_NAME,
+    "version": app_settings.APP_VER,
+    "copyright": app_settings.APP_COPYRIGHT
+    }
+    return app
 
 def list_posts_by_tag(request, tag_id):
 
     default_page = 1
-    posts_per_page = 2
+    posts_per_page = app_settings.DEFAULT_PER_PAGE
 
     tag = get_object_or_404(Tag, id=tag_id)
 
@@ -41,7 +51,8 @@ def list_posts_by_tag(request, tag_id):
 
     context = {
         "tag_name": tag.title,
-        "posts": posts
+        "posts": posts,
+        "app": app_info(),
     }
 
     return render(request, 'blog/post_list.html', context)
@@ -51,7 +62,7 @@ def post_list(request):
     #posts = Post.objects.filter(is_active=True).order_by('-created_on')
 
     default_page = 1
-    posts_per_page = 2
+    posts_per_page = app_settings.DEFAULT_PER_PAGE
 
 
     all_posts = Post.objects.filter(is_active=True).order_by('-created_on')
@@ -74,7 +85,8 @@ def post_list(request):
 
     context = {
         "tag_name": "all",
-        "posts": posts
+        "posts": posts,
+        "app": app_info,
     }
 
     #paginate_by = 1
@@ -102,6 +114,9 @@ def post_detail(request, slug):
             new_comment.post = post
             # Save the comment to the database
             new_comment.save()
+            #success_url = reverse_lazy("thanks")
+            #return redirect(success_url)
+
     else:
         comment_form = CommentForm()
 
@@ -118,6 +133,9 @@ def post_detail(request, slug):
                                            'comment_form': comment_form})
 
 
+
+def thanks(request):
+    return HttpResponse("Thank you! Will get in touch soon.")
 
 def AddPost(request):
     form = BlogForm()

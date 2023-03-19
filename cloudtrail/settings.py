@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'webassistant',
     'users',
     
+    
 ]
 
 MIDDLEWARE = [

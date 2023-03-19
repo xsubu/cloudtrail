@@ -1,0 +1,5 @@
+APP_NAME="CloudTrailX"
+APP_VER="1.03"
+APP_COPYRIGHT="(c) All rights reserved 2023"
+ALLOW_PAGINATION=True
+DEFAULT_PER_PAGE=4

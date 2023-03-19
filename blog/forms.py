@@ -7,6 +7,10 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content','author']
+        widget = {
+            'author': forms.TextInput(attrs={'class':'form-control'}),
+            'content': forms.Textarea(attrs={'class':'form-control'}),
+        }
 
     #def clean_name(self):
     #    """Make sure people don't use my name"""
