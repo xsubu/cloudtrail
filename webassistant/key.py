@@ -1,1 +1,0 @@
-CHATGPT_API_KEY = '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'
